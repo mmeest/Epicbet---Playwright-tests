@@ -1,3 +1,10 @@
+<div>
+  <p align="center">
+    <img src="https://github.com/mmeest/Epicbet---Playwright-tests/blob/main/Playwright.png" height="400px">
+  </p>
+</div>
+
+
 # Epicbet---Playwright-tests
 Playwright automation tests for Epicbet website.
 
