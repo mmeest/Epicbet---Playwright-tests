@@ -1,6 +1,6 @@
 <div>
   <p align="center">
-    <img src="https://github.com/mmeest/Epicbet---Playwright-tests/blob/main/Playwright.png" height="400px">
+    <img src="https://github.com/mmeest/Epicbet---Playwright-tests/blob/main/Playwright.png" height="250px">
   </p>
 </div>
 
