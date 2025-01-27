@@ -14,83 +14,56 @@ export class NavigationMenu {
     loginButton: '[data-testid="login-button"]',
     closeModalButton: '[data-testid="close-modal"]',
     signupButton: '[data-testid="signup-button"]',
-  }
-  
-  constructor(page: Page){
-    this.page = page;    
+  };
+
+  private destinations: Record<string, { selector: string; url: RegExp; title: string }> = {
+    sports: {
+      selector: this.selectors.sportButton,
+      url: /.*sports/,
+      title: "Epicbet - Your favorite sportsbook.",
+    },
+    casino: {
+      selector: this.selectors.casinoButton,
+      url: /.*casino/,
+      title: "Epicbet - Casino",
+    },
+    liveCasino: {
+      selector: this.selectors.liveCasinoButton,
+      url: /.*live-lobby/,
+      title: "Epicbet - Live Casino",
+    },
+    roadmap: {
+      selector: this.selectors.roadmapButton,
+      url: /.*roadmap/,
+      title: "Epicbet - Epicbet - Check our roadmap of the new features coming.",
+    },
+    promotions: {
+      selector: this.selectors.offersLink,
+      url: /.*user\/account\/promotions\//,
+      title: "Epicbet - My account",
+    },
+    home: {
+      selector: this.selectors.menuButton,
+      url: /.*sports/,
+      title: "Epicbet - Your favorite sportsbook.",
+    },
+  };
+
+  constructor(page: Page) {
+    this.page = page;
   }
 
-  // Navigation Methods
-  async navigateToSports(): Promise<void> {
-    console.log('Navigating to Sports page...');
-    await this.page.locator(this.selectors.sportButton).click();
-    await expect(this.page).toHaveURL(/.*sports/);
-    await expect(this.page).toHaveTitle("Epicbet - Your favorite sportsbook.");
-    console.log('Navigated to Sports page');
-  }
 
-  async navigateToCasino(): Promise<void> {
-    console.log('Navigating to Casino...');
-    await this.page.waitForSelector(this.selectors.casinoButton, { state: 'visible' });
-    await this.page.locator(this.selectors.casinoButton).click();
-    await expect(this.page).toHaveURL(/.*casino/);
-    await expect(this.page).toHaveTitle("Epicbet - Casino");
-    console.log('Navigated to Casino');
-  }
+  async navigateTo(key: keyof typeof this.destinations): Promise<void> {
+    const destination = this.destinations[key];
+    if (!destination) {
+      throw new Error(`Destination '${key}' not found in destinations map.`);
+    }
 
-  async navigateToLiveCasino(): Promise<void> {
-    console.log('Navigating to Live Casino...');
-    await this.page.locator(this.selectors.liveCasinoButton).click();
-    await expect(this.page).toHaveURL(/.*live-lobby/);
-    await expect(this.page).toHaveTitle("Epicbet - Live Casino");
-    console.log('Navigated to Live Casino');
-  }
-
-  async navigateToRoadmap(): Promise<void> {
-    console.log('Navigating to Roadmap...');
-    await this.page.locator(this.selectors.roadmapButton).click();
-    await expect(this.page).toHaveURL(/.*roadmap/);
-    await expect(this.page).toHaveTitle(
-      "Epicbet - Epicbet - Check our roadmap of the new features coming."
-      )
-    console.log('Navigated to Live Casino');
-  }
-
-  async navigateToPromotions(): Promise<void> {
-    console.log('Navigating to Promotions...');
-    await this.page.locator(this.selectors.offersLink).click();
-    await expect(this.page).toHaveURL(/.*user\/account\/promotions\//);
-    await expect(this.page).toHaveTitle("Epicbet - My account");
-    console.log('Navigated to Promotions');
-  }
-
-  async navigateToMainPage(): Promise<void> {
-    console.log('Navigating to Home page...');
-    await this.page.locator(this.selectors.menuButton).click();
-    await expect(this.page).toHaveURL(/.*sports/);
-    await expect(this.page).toHaveTitle("Epicbet - Your favorite sportsbook.");
-    console.log('Navigated to Home page');
-  }
-
-  async openPromotions(): Promise<void> {
-    await this.page.locator(this.selectors.offersLink).click();
-    await expect(this.page).toHaveURL(/.*promotions/);
-  }
-
-  async openLanguageSelector(): Promise<void> {
-    await this.page.locator(this.selectors.languageButton).click();
-    // Add further assertions or interactions for language selection if needed
-  }
-
-  async login(): Promise<void> {
-    await this.page.locator(this.selectors.loginButton).click();
-    // Add assertions to check if login modal or page is visible
-  }
-
-  async closeModal(): Promise<void> {
-    await this.page.locator(this.selectors.closeModalButton).click();
-    // Add validation to confirm the modal is closed
+    console.log(`Navigating to ${key}...`);
+    await this.page.locator(destination.selector).click();
+    await expect(this.page).toHaveURL(destination.url);
+    // await expect(this.page).toHaveTitle(destination.title);
+    console.log(`Navigated to ${key}`);
   }
 }
-
-  

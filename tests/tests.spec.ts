@@ -25,50 +25,51 @@ test.describe('Epicbet Navigation Tests', () => {
   test('User can navigate between pages', async ({ page }) => {
     const navigationMenu = new NavigationMenu(page);
 
-    // Navigate to different sections
-    await navigationMenu.navigateToCasino();
-    await navigationMenu.navigateToSports();
-    await navigationMenu.navigateToLiveCasino();
-    await navigationMenu.navigateToRoadmap();
-    await navigationMenu.navigateToPromotions();
+    // Navigate to links on main menu
+    await navigationMenu.navigateTo('casino');
+    await navigationMenu.navigateTo('sports');
+    await navigationMenu.navigateTo('liveCasino');
+    await navigationMenu.navigateTo('roadmap');
+    await navigationMenu.navigateTo('promotions');
 
     // Return to main page
-    await navigationMenu.navigateToMainPage();
+    await navigationMenu.navigateTo('home');
   });
 
   test('User can navigate links on page footer', async ({ page }) => {
     const footerMenu = new FooterMenu(page);  
     await footerMenu.scrollToBottom();
-
+  
     // PLATFORM  
-    await footerMenu.navigateToAboutUs();
-    await footerMenu.navigateToPartners();
-    await footerMenu.navigateToRoadmap();
-    //await page.goBack();
-
+    await footerMenu.navigateTo('aboutUs');
+    await footerMenu.navigateTo('partners');
+    await footerMenu.navigateTo('roadmap');
+    // await page.goBack();
+  
     // SPORTS
-    await footerMenu.navigateToSportsbook();
-    await footerMenu.navigateToLiveBet();
-    await footerMenu.navigateToSportsRules();
-    await footerMenu.navigateToSportsBonusRules();
-
+    await footerMenu.navigateTo('sportsbook');
+    await footerMenu.navigateTo('liveBet');
+    await footerMenu.navigateTo('sportsRules');
+    await footerMenu.navigateTo('sportsBonusRules');
+  
     // CASINO
-    await footerMenu.navigateToCasinoLobby();
-    await footerMenu.navigateToLiveCasinoLobby();
-    await footerMenu.navigateToCasinoBonusRules();
-
+    await footerMenu.navigateTo('casinoLobby');
+    await footerMenu.navigateTo('liveCasinoLobby');
+    await footerMenu.navigateTo('casinoBonusRules');
+  
     // PROMOTIONS
-    await footerMenu.navigateToSportsWelcomeBonus();
-    await footerMenu.navigateToCasinoWelcomeBonus();
-    await footerMenu.navigateToCasinoCashback();
-    await footerMenu.navigateToCasinoRakeback();
-
+    await footerMenu.navigateTo('sportsWelcomeBonus');
+    await footerMenu.navigateTo('casinoWelcomeBonus');
+    await footerMenu.navigateTo('casinoCashback');
+    await footerMenu.navigateTo('casinoRakeback');
+  
     // HELP
-    await footerMenu.navigateToContactUs();
-    //await footerMenu.navigateToFAQ();
-    await footerMenu.navigateToTermsAndConditions();
-    await footerMenu.navigateToPrivacyPolicy();
+    await footerMenu.navigateTo('contactUs');
+    // await footerMenu.navigateTo('faq');
+    await footerMenu.navigateTo('termsAndConditions');
+    await footerMenu.navigateTo('privacyPolicy');
   });
+  
 
   test('User can change language', async ({ page }) => {
     const language = new Language(page);

@@ -1,63 +1,78 @@
-import { Page, test, expect } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
-export class Language{
+export class Language {
     private page: Page;
 
     private selectors = {
-        languageSelectorDropdown: '[data-testid="language-button"]',
-        languageSelectionEnglish: '[data-testkey="en"]',
-        languageSelectionEesti: '[data-testkey="et"]',
-        languageSelectionSuomi: '[data-testkey="fi"]',
-        languageSelectionEspanol: '[data-testkey="es"]',
-        languageSelectionIslenska: '[data-testkey="is"]'
+        en: '[data-testkey="en"]',
+        et: '[data-testkey="et"]',
+        fi: '[data-testkey="fi"]',
+        es: '[data-testkey="es"]',
+        is: '[data-testkey="is"]'
+    };
+
+    private urlsAndTitles = {
+        en: {
+            language: "English",
+            url: "https://epicbet.com/en/sports/",
+            title: "Epicbet - Your favorite sportsbook."
+        },
+        et: {
+            language: "Eesti",
+            url: "https://epicbet.com/et/sport/",
+            title: "Epicbet - Sinu lemmik kihlveokontor."
+        },
+        fi: {
+            language: "Suomi",
+            url: "https://epicbet.com/fi/vedonlyonti/",
+            title: "Epicbet - Vedonlyönti"
+        },
+        es: {
+            language: "Espanol",
+            url: "https://epicbet.com/es/deportes/",
+            title: "Epicbet - Casa de Apuestas"
+        },
+        is: {
+            language: "Islenska",
+            url: "https://epicbet.com/is/ithrottir/",
+            title: "Epicbet - Sportsbook"
+        }
+    };
+
+    constructor(page: Page) {
+        this.page = page;
     }
 
-    constructor(page: Page){
-        this.page = page;    
+    private async selectLanguage(languageKey: keyof typeof this.urlsAndTitles): Promise<void> {
+        const { language, url, title } = this.urlsAndTitles[languageKey];
+
+        console.log(`Setting page language to: ${language}...`);
+        await this.page.getByTestId('language-button').click();
+        await this.page.locator(this.selectors[languageKey]).click();
+
+        await expect(this.page).toHaveURL(url);
+        await expect(this.page).toHaveTitle(title);
+
+        console.log(`Page translation: ${language} selected`);
     }
 
     async selectLanguageToEnglish(): Promise<void> {
-        console.log('Setting page language to: English...');
-        await this.page.getByTestId('language-button').click();
-        await this.page.locator(this.selectors.languageSelectionEnglish).click();
-        await expect(this.page).toHaveURL("https://epicbet.com/en/sports/");
-        //await expect(this.page).toHaveTitle("Epicbet - Your favorite sportsbook.");
-        console.log('Page trasnlation: English selected')
+        await this.selectLanguage('en');
     }
 
     async selectLanguageToEstonia(): Promise<void> {
-        console.log('Setting page language to: Eesti...');
-        await this.page.getByTestId('language-button').click();
-        await this.page.locator(this.selectors.languageSelectionEesti).click();
-        await expect(this.page).toHaveURL("https://epicbet.com/et/sport/");  
-        //await expect(this.page).toHaveTitle("Epicbet - Sinu lemmik kihlveokontor.");
-        console.log('Page translation: Eesti selected')
+        await this.selectLanguage('et');
     }
 
     async selectLanguageToFinnish(): Promise<void> {
-        console.log('Setting page language to: Suomi...');
-        await this.page.getByTestId('language-button').click();
-        await this.page.locator(this.selectors.languageSelectionSuomi).click();
-        await expect(this.page).toHaveURL("https://epicbet.com/fi/vedonlyonti/");  
-        //await expect(this.page).toHaveTitle("Epicbet - Vedonlyönti");
-        console.log('Page translation: Suomi selected')
+        await this.selectLanguage('fi');
     }
 
     async selectLanguageToEspanol(): Promise<void> {
-        console.log('Setting page language to: Español...');
-        await this.page.getByTestId('language-button').click();
-        await this.page.locator(this.selectors.languageSelectionEspanol).click();
-        await expect(this.page).toHaveURL("https://epicbet.com/es/deportes/");  
-        //await expect(this.page).toHaveTitle("Epicbet - Casa de Apuestas");
-        console.log('Page translation: Español selected')
+        await this.selectLanguage('es');
     }
 
     async selectLanguageToIslandic(): Promise<void> {
-        console.log('Setting page language to: Icelandic...');
-        await this.page.getByTestId('language-button').click();
-        await this.page.locator(this.selectors.languageSelectionIslenska).click();
-        await expect(this.page).toHaveURL("https://epicbet.com/is/ithrottir/");  
-        //await expect(this.page).toHaveTitle("Epicbet - Sportsbook");
-        console.log('Page translation: Icelandic selected')
+        await this.selectLanguage('is');
     }
 }
